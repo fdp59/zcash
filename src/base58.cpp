@@ -4,19 +4,11 @@
 
 #include "base58.h"
 
-#include "hash.h"
-#include "uint256.h"
-
-#include "version.h"
-#include "streams.h"
+#include <hash.h>
+#include <uint256.h>
 
 #include <assert.h>
-#include <stdint.h>
 #include <string.h>
-#include <vector>
-#include <string>
-#include <boost/variant/apply_visitor.hpp>
-#include <boost/variant/static_visitor.hpp>
 
 /** All alphanumeric characters except for "0", "I", "O", and "l" */
 static const char* pszBase58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -104,7 +96,7 @@ std::string EncodeBase58(const unsigned char* pbegin, const unsigned char* pend)
 
 std::string EncodeBase58(const std::vector<unsigned char>& vch)
 {
-    return EncodeBase58(&vch[0], &vch[0] + vch.size());
+    return EncodeBase58(vch.data(), vch.data() + vch.size());
 }
 
 bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet)
@@ -344,7 +336,7 @@ template<class DATA_TYPE, CChainParams::Base58Type PREFIX, size_t SER_SIZE>
 bool CZCEncoding<DATA_TYPE, PREFIX, SER_SIZE>::Set(const DATA_TYPE& addr)
 {
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-    ss << addr;
+    //ss << addr;
     std::vector<unsigned char> addrSerialized(ss.begin(), ss.end());
     assert(addrSerialized.size() == SER_SIZE);
     SetData(Params().Base58Prefix(PREFIX), &addrSerialized[0], SER_SIZE);
@@ -370,7 +362,7 @@ DATA_TYPE CZCEncoding<DATA_TYPE, PREFIX, SER_SIZE>::Get() const
 
     CDataStream ss(serialized, SER_NETWORK, PROTOCOL_VERSION);
     DATA_TYPE ret;
-    ss >> ret;
+    //ss >> ret;
     return ret;
 }
 

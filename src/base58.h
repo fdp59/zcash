@@ -14,6 +14,8 @@
 #ifndef BITCOIN_BASE58_H
 #define BITCOIN_BASE58_H
 
+#include <string>
+#include <vector>
 #include "chainparams.h"
 #include "key.h"
 #include "pubkey.h"
@@ -21,9 +23,6 @@
 #include "script/standard.h"
 #include "support/allocators/zeroafterfree.h"
 #include "zcash/Address.hpp"
-
-#include <string>
-#include <vector>
 
 /**
  * Encode a byte sequence as a base58-encoded string.
@@ -58,13 +57,14 @@ std::string EncodeBase58Check(const std::vector<unsigned char>& vchIn);
  * Decode a base58-encoded string (psz) that includes a checksum into a byte
  * vector (vchRet), return true if decoding is successful
  */
-inline bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRet);
+bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRet);
 
 /**
  * Decode a base58-encoded string (str) that includes a checksum into a byte
  * vector (vchRet), return true if decoding is successful
  */
-inline bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet);
+
+//inline bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet);
 
 /**
  * Base class for all base58-encoded data
@@ -214,5 +214,8 @@ public:
 
 typedef CBitcoinExtKeyBase<CExtKey, 74, CChainParams::EXT_SECRET_KEY> CBitcoinExtKey;
 typedef CBitcoinExtKeyBase<CExtPubKey, 74, CChainParams::EXT_PUBLIC_KEY> CBitcoinExtPubKey;
+
+
+bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet);
 
 #endif // BITCOIN_BASE58_H
